@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block wrap_content %}
+<body class="skin-red">
+  <header class="main-header">
+    {% include 'partials/navbar.html' %}
+  </header>
+  <aside class="main-sidebar">
+    {% include 'partials/sidebar.html' %}
+  </aside>
+  {% block content %}
+  {% endblock %}
+</body>
+{% endblock %}

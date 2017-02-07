@@ -1,0 +1,85 @@
+{% extends 'layout_1.html' %}
+{% load staticfiles %}
+
+{% block styles %}
+  {{ block.super }}
+<link rel="stylesheet"
+      href="{% static 'plugins/datatables/dataTables.bootstrap.css' %}">
+{% endblock %}
+{% block content %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    {% include 'partials/breadcrumb.html' with page_name='Pending Request' %}
+
+    <!-- Main content -->
+
+    <!-- Main content -->
+    <section class="content">
+          <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>Request Type</th>
+                  <th>Description</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {% for i in "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" %}
+                  <tr>
+                    <td>Vacaciones tipo {{ forloop.counter }}</td>
+                    <td>Viaje Berlin {{ forloop.counter }}</td>
+                    <td>29/10/2017 12:00</td>
+                    <td>30/10/2017 12:00</td>
+                    <td><span class="label label-warning">Pending</span></td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                  <th>Request Type</th>
+                  <th>Description</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Status</th>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <!-- DataTables -->
+  <script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}">
+  </script>
+  <script src="{% static 'plugins/datatables/dataTables.bootstrap.min.js' %}">
+  </script>
+  <script>
+    $(function () {
+    $('#example1').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false
+    });
+    });
+  </script>
+
+{% endblock %}
