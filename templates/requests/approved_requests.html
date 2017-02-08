@@ -11,7 +11,7 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    {% include 'partials/breadcrumb.html' with page_name='Approved Request' %}
+    {% include 'partials/breadcrumb.html' with page_name='Approved Requests' %}
 
     <!-- Main content -->
 
@@ -20,7 +20,7 @@
           <div class="box">
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="datatable" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Request Type</th>
@@ -38,7 +38,7 @@
                     <td>{{ request.start_date|date:"r" }}</td>
                     <td>{{ request.end_date|date:"r" }}</td>
                     <td>
-                      <span class="label label-warning">
+                      <span class="label label-success">
                         {{ request.status }}
                       </span>
                     </td>
@@ -77,13 +77,23 @@
   </script>
   <script>
     $(function () {
-    $('#example1').DataTable({
+    $('#datatable').DataTable({
         "paging": true,
         "lengthChange": false,
         "searching": true,
         "ordering": true,
         "info": true,
-        "autoWidth": false
+        "autoWidth": false,
+        "columnDefs": [
+            {
+                "targets": 1,
+                "order": "asc|desc"
+            },
+            {
+                "targets": [4],
+                "orderable": false
+            }
+        ]
     });
     });
   </script>

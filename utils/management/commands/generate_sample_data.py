@@ -67,4 +67,7 @@ class Command(BaseCommand):
             employer = User.objects.get(username="employer")
             NotificationFactory(user=employee)
             NotificationFactory(user=employer)
-            RequestFactory(user=employee)
+        for i in range(10):
+            RequestFactory(user=employee, status="approved")
+            RequestFactory(user=employee, status="declined")
+            RequestFactory(user=employee, status="pending")

@@ -1,3 +1,4 @@
+import datetime
 import factory
 
 from auth_account.factories import UserFactory
@@ -10,6 +11,5 @@ class NotificationFactory(factory.django.DjangoModelFactory):
         model = models.Notification
 
     user = factory.SubFactory(UserFactory)
-    name = factory.Faker('name')
-    description = factory.Faker('name')
-    notification_type = 'warning'
+    message = factory.Faker('name')
+    datetime = factory.LazyFunction(datetime.datetime.now)

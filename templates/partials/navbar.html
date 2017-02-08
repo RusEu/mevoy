@@ -21,9 +21,7 @@
     <ul class="nav navbar-nav">
       <!-- Messages: style can be found in dropdown.less-->
       <li class="messages-menu">
-        <a href="{% url 'notifications' %}"
-           class="dropdown-toggle"
-           data-toggle="dropdown">
+        <a href="{% url 'notifications' %}">
           <i class="fa fa-bell"></i>
           <span class="label label-warning">
             {{ notifications|length }}

@@ -17,7 +17,7 @@
           <div class="box">
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="datatable" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Request Type</th>
@@ -73,15 +73,26 @@
   </script>
   <script>
     $(function () {
-    $('#example1').DataTable({
+    $('#datatable').DataTable({
         "paging": true,
         "lengthChange": false,
         "searching": true,
         "ordering": true,
         "info": true,
-        "autoWidth": false
+        "autoWidth": false,
+        "columnDefs": [
+            {
+                "targets": 1,
+                "order": "asc|desc"
+            },
+            {
+                "targets": [4],
+                "orderable": false
+            }
+        ]
     });
     });
   </script>
+
 
 {% endblock %}

@@ -14,9 +14,9 @@ urlpatterns = [
         PendingRequestsPageView.as_view(),
         name='pending_requests'),
     url(r'^declined_requests/$',
-        ApprovedRequestsPageView.as_view(),
-        name='approved_requests'),
-    url(r'^approved_requests/$',
         DeclinedRequestsPageView.as_view(),
         name='declined_requests'),
+    url(r'^approved_requests/$',
+        ApprovedRequestsPageView.as_view(),
+        name='approved_requests'),
 ]

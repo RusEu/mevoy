@@ -5,13 +5,16 @@ from notifications.models import Notification
 
 
 def global_processor(request):
+    if request.user.is_anonymous():
+        return {}
+
     pending_requests = Request.objects.filter(user=request.user,
                                               status="pending")
     approved_requests = Request.objects.filter(user=request.user,
                                                status="approved")
     declined_requests = Request.objects.filter(user=request.user,
                                                status="declined")
-    notifications = Notification.objects.all()
+    notifications = Notification.objects.filter(user=request.user)
 
     return {
         "SITE_NAME": get_current_site(request).name,
