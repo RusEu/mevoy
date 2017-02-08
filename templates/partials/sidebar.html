@@ -5,7 +5,11 @@
   <!-- Sidebar user panel -->
   <div class="user-panel">
     <div class="pull-left image">
-      <img src="{{ request.user.profile_picture.url }}"
+      <img src="{% if request.user.profile_picture %}
+                {{ request.user.profile_picture.url }}
+                {% else %}
+                {{ unknown_user_image }}
+                {% endif %}"
            class="img-circle" alt="User Image">
     </div>
     <div class="pull-left info">
@@ -21,10 +25,16 @@
         <i class="fa fa-files-o"></i>
         <span>Requests</span>
         <span class="pull-right-container">
-          <small class="label pull-right bg-red" title="Declined">5</small>
-          <small class="label pull-right bg-green" title="Approved">16</small>
+          <small class="label pull-right bg-red"
+                 title="Declined">
+            {{ declined_requests|length }}
+          </small>
+          <small class="label pull-right bg-green"
+                 title="Approved">
+            {{ approved_requests|length }}
+          </small>
           <small class="label pull-right bg-yellow"
-                 title="Pending">12</small>
+                 title="Pending">{{ pending_requests|length }}</small>
         </span>
       </a>
       <ul class="treeview-menu">
@@ -35,19 +45,25 @@
         </li>
         <li>
           <a href="{% url 'pending_requests' %}">
-            <small class="label pull-right bg-yellow" title="Pending">5</small>
+            <small class="label pull-right bg-yellow" title="Pending">
+              {{ pending_requests|length }}
+            </small>
             Pending Requests
           </a>
         </li>
         <li>
           <a href="{% url 'declined_requests' %}">
-            <small class="label pull-right bg-red" title="Declined">5</small>
+            <small class="label pull-right bg-red" title="Declined">
+              {{ declined_requests|length }}
+            </small>
             Declined Requests
           </a>
         </li>
         <li>
           <a href="{% url 'approved_requests' %}">
-            <small class="label pull-right bg-green" title="Approved">16</small>
+            <small class="label pull-right bg-green" title="Approved">
+              {{ approved_requests|length }}
+            </small>
             Approved Requests
           </a>
         </li>
@@ -59,10 +75,12 @@
       </a>
     </li>
     <li>
-      <a href="mailbox/mailbox.html">
+      <a href="{% url 'notifications' %}">
         <i class="fa fa-bell"></i> <span>Notifications</span>
         <span class="pull-right-container">
-          <small class="label pull-right bg-yellow">12</small>
+          <small class="label pull-right bg-yellow">
+            {{ notifications|length }}
+          </small>
         </span>
       </a>
     </li>

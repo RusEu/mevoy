@@ -1,3 +1,4 @@
+import datetime
 import factory
 
 from . import models
@@ -6,14 +7,16 @@ from . import models
 class HolidayFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Holiday
+        django_get_or_create = ('name',)
 
     name = factory.Faker('name')
-    date = factory.Faker('date')
+    date = factory.LazyFunction(datetime.datetime.now)
 
 
 class CalendarFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Calendar
+        django_get_or_create = ('name',)
 
     name = factory.Faker('name')
 

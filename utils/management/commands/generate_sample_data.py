@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 
 from auth_account.factories import UserFactory, GroupFactory
-from auth_account.models import User
+from auth_account.models import User, Group
 from vacation_request.factories import (ModificatorFactory,
                                         RequestFactory,
                                         RequestTypeFactory)
@@ -26,31 +26,31 @@ class Command(BaseCommand):
         )
         return calendar
 
-    def user(self, email=None):
+    def user(self, username=None):
         request_types = (RequestTypeFactory for RequestTypeFactory in range(5))
         group = GroupFactory()
         for request_type in request_types:
             group.request_types.add(request_type)
         modificators = (ModificatorFactory for ModificatorFactory in range(5))
-        if email:
+        if username:
             user = UserFactory(
-                email=email,
-                groups=group,
+                username=username,
                 modificators=modificators)
+            user.groups.add(group)
         else:
             user = UserFactory(
-                groups=group,
                 modificators=modificators
             )
+            user.groups.add(group)
         user.set_password(settings.DEFAULT_PASSWORD)
         return user
 
-    def employee(self, email="employee@mevoy.es"):
-        employee = self.user(email=email)
+    def employee(self, username="employee"):
+        employee = self.user(username=username)
         return employee
 
-    def employer(self, email="employer@mevoy.es"):
-        employer = self.user(email=email)
+    def employer(self, username="employer"):
+        employer = self.user(username=username)
         return employer
 
     def department(self):
@@ -63,8 +63,8 @@ class Command(BaseCommand):
         Department.objects.all().delete()
         self.department()
         for i in range(10):
-            employee = User.objects.get(email="employee@mevoy.es")
-            employer = User.objects.get(email="employer@mevoy.es")
+            employee = User.objects.get(username="employee")
+            employer = User.objects.get(username="employer")
             NotificationFactory(user=employee)
             NotificationFactory(user=employer)
             RequestFactory(user=employee)

@@ -9,11 +9,13 @@ from . import models
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.User
+        django_get_or_create = ('username',)
 
     username = factory.Sequence(lambda n: "user_%d" % n)
-    first_name = factory.Faker('first_name')
-    last_name = factory.Faker('last_name')
-    email = factory.Faker('email')
+    first_name = factory.Faker('name')
+    last_name = factory.Faker('name')
+    email = factory.LazyAttribute(lambda a: '{0}.{1}@example.com'.format(
+        a.first_name, a.last_name).lower())
     job_title = factory.SubFactory(JobFactory)
     gender = 'male'
 
@@ -39,7 +41,9 @@ class UserFactory(factory.django.DjangoModelFactory):
 class GroupFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Group
+        django_get_or_create = ('name',)
 
+    name = factory.Faker('name')
     holiday_calendar = factory.SubFactory(CalendarFactory)
 
     @factory.post_generation

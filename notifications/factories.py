@@ -11,5 +11,5 @@ class NotificationFactory(factory.django.DjangoModelFactory):
 
     user = factory.SubFactory(UserFactory)
     name = factory.Faker('name')
-    description = factory.Faker('description')
-    notification_type = factory.Faker('notification_type')
+    description = factory.Faker('name')
+    notification_type = 'warning'

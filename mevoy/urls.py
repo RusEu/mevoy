@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^account/', include('auth_account.urls')),
     url(r'^vacantion_requests/', include('vacation_request.urls')),
     url(r'^calendar/', include('holiday_calendar.urls')),
+    url(r'^notifications/', include('notifications.urls')),
     url('^', include('django.contrib.auth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

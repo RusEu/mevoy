@@ -98,7 +98,7 @@
           "backgroundColor": "#f56954",
           "borderColor": "#f56954"
       }]
-      {% for request_type in request_types %}
+      {% for request_type in request_types|slice:":5" %}
       var color_class = colors[parseInt({{ forloop.counter }})]["class"]
       var element = "<div class='external-event " + color_class +"'>{{ request_type.name }} </div>";
       $('#external-events').append(element);

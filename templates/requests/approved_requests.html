@@ -31,13 +31,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                  {% for i in "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" %}
+                  {% for request in approved_requests %}
                   <tr>
-                    <td>Vacaciones tipo {{ forloop.counter }}</td>
-                    <td>Viaje Berlin {{ forloop.counter }}</td>
-                    <td>29/10/2017 12:00</td>
-                    <td>30/10/2017 12:00</td>
-                    <td><span class="label label-success">Approved</span></td>
+                    <td>{{ request.request_type.name }}</td>
+                    <td>{{ request.description }} </td>
+                    <td>{{ request.start_date|date:"r" }}</td>
+                    <td>{{ request.end_date|date:"r" }}</td>
+                    <td>
+                      <span class="label label-warning">
+                        {{ request.status }}
+                      </span>
+                    </td>
                   </tr>
                   {% endfor %}
                 </tbody>

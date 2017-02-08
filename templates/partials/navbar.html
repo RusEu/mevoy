@@ -21,25 +21,37 @@
     <ul class="nav navbar-nav">
       <!-- Messages: style can be found in dropdown.less-->
       <li class="messages-menu">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <a href="{% url 'notifications' %}"
+           class="dropdown-toggle"
+           data-toggle="dropdown">
           <i class="fa fa-bell"></i>
-          <span class="label label-success">4</span>
+          <span class="label label-warning">
+            {{ notifications|length }}
+          </span>
         </a>
       </li>
       <!-- User Account: style can be found in dropdown.less -->
       <li class="dropdown user user-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          <img src="{{ request.user.profile_picture.url }}"
+          <img src="{% if request.user.profile_picture %}
+                    {{ request.user.profile_picture.url }}
+                    {% else %}
+                    {{ unknown_user_image }}
+                    {% endif %}"
                class="user-image" alt="User Image">
           <span class="hidden-xs">{{ request.user.get_full_name }}</span>
         </a>
         <ul class="dropdown-menu">
           <!-- User image -->
           <li class="user-header">
-            <img src="{{ request.user.profile_picture.url }}"
-                 class="img-circle" alt="User Image">
+          <img src="{% if request.user.profile_picture %}
+                    {{ request.user.profile_picture.url }}
+                    {% else %}
+                    {{ unknown_user_image }}
+                    {% endif %}"
+               class="img-circle" alt="User Image">
 
-            <p>{{ request.user.job_title }}</p>
+            <p>{{ request.user.job_title.title }}</p>
             <p>
               <small>Department: {{ request.user.department }}</small>
             </p>

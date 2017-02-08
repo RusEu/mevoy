@@ -6,7 +6,7 @@ from . import models
 class DepartmentFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Department
-
+        django_get_or_create = ('name',)
     name = factory.Faker('name')
 
     @factory.post_generation
@@ -40,9 +40,9 @@ class DepartmentFactory(factory.django.DjangoModelFactory):
 class JobFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Job
-
-    title = factory.Faker('title')
-    description = factory.Faker('description')
+        django_get_or_create = ('title',)
+    title = factory.Faker('name')
+    description = factory.Faker('name')
 
     @factory.post_generation
     def modificators(self, create, extracted, **kwargs):
