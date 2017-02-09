@@ -10,7 +10,6 @@ class Department(models.Model):
                                       related_name="manager_departments")
     modificators = models.ManyToManyField('vacation_request.Modificator',
                                           blank=True)
-
     def __unicode__(self):
         return self.name
 
