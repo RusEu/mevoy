@@ -4,8 +4,15 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class RequestType(models.Model):
+    PERIOD_TYPES = (
+        ('week', _('Week')),
+        ('month', _('Month')),
+        ('year', _('Year')),
+    )
+
     name = models.CharField(max_length=150)
     available_days = models.IntegerField(default=0)
+    period = models.CharField(max_length=100, choices=PERIOD_TYPES)
 
     def __unicode__(self):
         return self.name
