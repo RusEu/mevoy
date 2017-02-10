@@ -27,21 +27,11 @@
                   <th>Status</th>
                 </tr>
                 </thead>
-                <tbody>
-                  {% for request in pending_requests %}
-                  <tr>
-                    <td>{{ request.request_type.name }}</td>
-                    <td>{{ request.description }} </td>
-                    <td>{{ request.start_date|date:"r" }}</td>
-                    <td>{{ request.end_date|date:"r" }}</td>
-                    <td>
-                      <span class="label label-warning">
-                        {{ request.status }}
-                      </span>
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
+                {% if section == 'employee' %}
+                  {% include 'requests/partials/employee_pending_requests.html' with requests=employee_pending_requests %}
+                {% elif section == 'manager' %}
+                  {% include 'requests/partials/manager_pending_requests.html' with requests=manager_pending_requests %}
+                {% endif %}
                 <tfoot>
                 <tr>
                   <th>Request Type</th>

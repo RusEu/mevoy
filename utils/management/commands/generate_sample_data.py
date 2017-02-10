@@ -38,35 +38,35 @@ class Command(BaseCommand):
                 modificators=modificators)
             user.groups.add(group)
         else:
-            user = UserFactory(
-                modificators=modificators
-            )
+            user = UserFactory(modificators=modificators)
             user.groups.add(group)
         user.set_password(settings.DEFAULT_PASSWORD)
+        user.save()
         return user
 
     def employee(self, username="employee"):
         employee = self.user(username=username)
         return employee
 
-    def employer(self, username="employer"):
-        employer = self.user(username=username)
-        return employer
+    def manager(self, username="manager"):
+        manager = self.user(username=username)
+        return manager
 
     def department(self):
         department = DepartmentFactory()
         department.employees.add(self.employee())
-        department.managers.add(self.employer())
+        department.managers.add(self.manager())
         return department
 
     def handle(self, *args, **options):
         Department.objects.all().delete()
-        self.department()
+        for i in range(3):
+            self.department()
         for i in range(10):
             employee = User.objects.get(username="employee")
-            employer = User.objects.get(username="employer")
+            manager = User.objects.get(username="manager")
             NotificationFactory(user=employee)
-            NotificationFactory(user=employer)
+            NotificationFactory(user=manager)
         for i in range(10):
             RequestFactory(user=employee, status="approved")
             RequestFactory(user=employee, status="declined")

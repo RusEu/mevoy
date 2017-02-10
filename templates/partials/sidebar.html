@@ -44,7 +44,7 @@
           </a>
         </li>
         <li>
-          <a href="{% url 'pending_requests' %}">
+          <a href="{% url 'pending_requests' 'employee' %}">
             <small class="label pull-right bg-yellow" title="Pending">
               {{ employee_pending_requests|length }}
             </small>
@@ -52,7 +52,7 @@
           </a>
         </li>
         <li>
-          <a href="{% url 'declined_requests' %}">
+          <a href="{% url 'declined_requests' 'employee' %}">
             <small class="label pull-right bg-red" title="Declined">
               {{ employee_declined_requests|length }}
             </small>
@@ -60,7 +60,7 @@
           </a>
         </li>
         <li>
-          <a href="{% url 'approved_requests' %}">
+          <a href="{% url 'approved_requests' 'employee' %}">
             <small class="label pull-right bg-green" title="Approved">
               {{ employee_approved_requests|length }}
             </small>
@@ -96,14 +96,14 @@
         <span class="pull-right-container">
           <small class="label pull-right bg-red"
                  title="Declined">
-            {{ declined_requests|length }}
+            {{ manager_declined_requests|length }}
           </small>
           <small class="label pull-right bg-green"
                  title="Approved">
-            {{ approved_requests|length }}
+            {{ manager_approved_requests|length }}
           </small>
           <small class="label pull-right bg-yellow"
-                 title="Pending">{{ pending_requests|length }}</small>
+                 title="Pending">{{ manager_pending_requests|length }}</small>
         </span>
       </a>
       <ul class="treeview-menu">
@@ -113,25 +113,25 @@
           </a>
         </li>
         <li>
-          <a href="{% url 'pending_requests' %}">
+          <a href="{% url 'pending_requests' 'manager' %}">
             <small class="label pull-right bg-yellow" title="Pending">
-              {{ pending_requests|length }}
+              {{ manager_pending_requests|length }}
             </small>
             Pending Requests
           </a>
         </li>
         <li>
-          <a href="{% url 'declined_requests' %}">
+          <a href="{% url 'declined_requests' 'manager' %}">
             <small class="label pull-right bg-red" title="Declined">
-              {{ declined_requests|length }}
+              {{ manager_declined_requests|length }}
             </small>
             Declined Requests
           </a>
         </li>
         <li>
-          <a href="{% url 'approved_requests' %}">
+          <a href="{% url 'approved_requests' 'manager' %}">
             <small class="label pull-right bg-green" title="Approved">
-              {{ approved_requests|length }}
+              {{ manager_approved_requests|length }}
             </small>
             Approved Requests
           </a>

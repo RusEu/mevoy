@@ -13,7 +13,7 @@ urlpatterns = [
 
     url(r'^admin/', admin.site.urls),
     url(r'^account/', include('auth_account.urls')),
-    url(r'^vacantion_requests/', include('vacation_request.urls')),
+    url(r'^vacation_requests/', include('vacation_request.urls')),
     url(r'^calendar/', include('holiday_calendar.urls')),
     url(r'^notifications/', include('notifications.urls')),
     url('^', include('django.contrib.auth.urls')),

@@ -1,10 +1,8 @@
-from django.views.generic.base import TemplateView, RedirectView
+from django.views.generic.base import TemplateView
 from django.views.generic import FormView
-from django.shortcuts import render
 from django.core.urlresolvers import reverse
 from django.contrib.auth import login
 from django.http import HttpResponseRedirect
-from django.contrib.auth import login
 
 from company.models import Department
 
@@ -37,5 +35,6 @@ class LoginUserPageView(FormView):
             success_url = reverse('new_request')
         if self.request.user in department.managers.all():
             self.request.session["is_manager"] = True
-            success_url = reverse('pending_requests')
+            success_url = reverse('pending_requests',
+                                  kwargs={"section": "manager"})
         return HttpResponseRedirect(success_url)

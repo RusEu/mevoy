@@ -2,6 +2,7 @@ import datetime
 import factory
 
 from auth_account.factories import UserFactory
+from company.factories import DepartmentFactory
 
 from . import models
 
@@ -24,6 +25,7 @@ class RequestFactory(factory.django.DjangoModelFactory):
     start_date = factory.LazyFunction(datetime.datetime.now)
     end_date = factory.LazyFunction(datetime.datetime.now)
     description = factory.Faker('name')
+    department = factory.SubFactory(DepartmentFactory)
     request_type = factory.SubFactory(RequestTypeFactory)
     status = 'pending'
 

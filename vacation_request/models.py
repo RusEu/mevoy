@@ -30,6 +30,7 @@ class Request(models.Model):
     end_date = models.DateTimeField()
     description = models.TextField(blank=True, null=True)
     request_type = models.ForeignKey(RequestType)
+    department = models.ForeignKey('company.Department')
     status = models.CharField(max_length=100,
                               choices=STATUS_TYPES,
                               default='pending')

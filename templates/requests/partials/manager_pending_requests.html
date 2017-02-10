@@ -1,0 +1,23 @@
+<tbody>
+  {% for request in requests %}
+  <tr>
+    <td>{{ request.request_type.name }}</td>
+    <td>{{ request.description }} </td>
+    <td>{{ request.start_date|date:"r" }}</td>
+    <td>{{ request.end_date|date:"r" }}</td>
+    <td>
+      <div class="btn-group">
+        <button type="button" class="btn btn-default">Action</button>
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <span class="caret"></span>
+          <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="#">Decline</a></li>
+          <li><a href="#">Approve</a></li>
+        </ul>
+      </div>
+    </td>
+  </tr>
+  {% endfor %}
+</tbody>
