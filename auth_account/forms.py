@@ -48,3 +48,7 @@ class LoginForm(AuthenticationForm):
                 self.error_messages['department_not_allowed'],
                 code='department_not_allowed'
             )
+
+
+class ProfileForm(forms.Form):
+    pass
