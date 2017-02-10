@@ -17,9 +17,78 @@
       <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
     </div>
   </div>
-  <!-- sidebar menu: : style can be found in sidebar.less -->
+  {% if request.session.is_employee %}
   <ul class="sidebar-menu">
-    <li class="header">MAIN NAVIGATION</li>
+    <li class="header">EMPLOYEE NAVIGATION</li>
+    <li class="treeview">
+      <a href="#">
+        <i class="fa fa-files-o"></i>
+        <span>Requests</span>
+        <span class="pull-right-container">
+          <small class="label pull-right bg-red"
+                 title="Declined">
+            {{ employee_declined_requests|length }}
+          </small>
+          <small class="label pull-right bg-green"
+                 title="Approved">
+            {{ employee_approved_requests|length }}
+          </small>
+          <small class="label pull-right bg-yellow"
+                 title="Pending">{{ employee_pending_requests|length }}</small>
+        </span>
+      </a>
+      <ul class="treeview-menu">
+        <li>
+          <a href="{% url 'new_request' %}">
+            New Request
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'pending_requests' %}">
+            <small class="label pull-right bg-yellow" title="Pending">
+              {{ employee_pending_requests|length }}
+            </small>
+            Pending Requests
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'declined_requests' %}">
+            <small class="label pull-right bg-red" title="Declined">
+              {{ employee_declined_requests|length }}
+            </small>
+            Declined Requests
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'approved_requests' %}">
+            <small class="label pull-right bg-green" title="Approved">
+              {{ employee_approved_requests|length }}
+            </small>
+            Approved Requests
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a href="{% url 'calendar' %}">
+        <i class="fa fa-calendar"></i> <span>Calendar</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'notifications' %}">
+        <i class="fa fa-bell"></i> <span>Notifications</span>
+        <span class="pull-right-container">
+          <small class="label pull-right bg-yellow">
+            {{ notifications|length }}
+          </small>
+        </span>
+      </a>
+    </li>
+  </ul>
+  {% endif %}
+  {% if request.session.is_manager %}
+  <ul class="sidebar-menu">
+    <li class="header">MANAGER NAVIGATION</li>
     <li class="treeview">
       <a href="#">
         <i class="fa fa-files-o"></i>
@@ -69,7 +138,7 @@
         </li>
       </ul>
     </li>
-    <li class="active">
+    <li>
       <a href="{% url 'calendar' %}">
         <i class="fa fa-calendar"></i> <span>Calendar</span>
       </a>
@@ -84,11 +153,7 @@
         </span>
       </a>
     </li>
-    <li>
-      <a href="{% url 'profile' %}">
-        <i class="fa fa-user"></i> <span>Profile</span>
-      </a>
-    </li>
   </ul>
+  {% endif %}
 </section>
 <!-- /.sidebar -->
