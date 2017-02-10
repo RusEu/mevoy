@@ -12,8 +12,8 @@
 
     <form action="#" method="post">
       {% csrf_token %}
-      {% if form.errors.username %}
-        <div class="alert alert-danger"> {{ form.errors.username }} </div>
+      {% if form.username.errors %}
+        <div class="alert alert-danger"> {{ form.username.errors }} </div>
       {% endif %}
       <div class="form-group has-feedback">
         <input name="username"
@@ -22,8 +22,8 @@
                placeholder="Username">
         <span class="fa fa-envelope form-control-feedback"></span>
       </div>
-      {% if form.errors.password %}
-      <div class="alert alert-danger"> {{ form.errors.password }} </div>
+      {% if form.password.errors %}
+      <div class="alert alert-danger"> {{ form.password.errors }} </div>
       {% endif %}
       <div class="form-group has-feedback">
         <input name="password" type="password"
@@ -31,8 +31,8 @@
         <span class="fa fa-lock form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        {% if form.errors.department %}
-        <div class="alert alert-danger"> {{ form.errors.department }} </div>
+        {% if form.department.errors %}
+        <div class="alert alert-danger"> {{ form.department.errors }} </div>
         {% endif %}
         <select class="form-control" name="department">
           {% for department in departments %}
