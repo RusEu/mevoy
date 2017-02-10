@@ -51,7 +51,7 @@
 
             <p>{{ request.user.job_title.title }}</p>
             <p>
-              <small>Department: {{ request.user.department }}</small>
+              <small>Department: {{ request.session.department }}</small>
             </p>
           </li>
           <!-- Menu Footer-->
