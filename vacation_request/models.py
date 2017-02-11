@@ -19,10 +19,14 @@ class RequestType(models.Model):
 
 
 class Request(models.Model):
+    APPROVED = "approved"
+    DECLINED = "declined"
+    PENDING = "pending"
+
     STATUS_TYPES = (
-        ('approved', _('Approved')),
-        ('declined', _('Declined')),
-        ('pending', _('Pending')),
+        (APPROVED, _('Approved')),
+        (DECLINED, _('Declined')),
+        (PENDING, _('Pending')),
     )
 
     user = models.ForeignKey('auth_account.User', related_name="user_requests")

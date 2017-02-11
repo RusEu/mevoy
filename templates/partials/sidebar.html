@@ -75,11 +75,11 @@
       </a>
     </li>
     <li>
-      <a href="{% url 'notifications' %}">
+      <a href="{% url 'notifications' 'employee' %}">
         <i class="fa fa-bell"></i> <span>Notifications</span>
         <span class="pull-right-container">
           <small class="label pull-right bg-yellow">
-            {{ notifications|length }}
+            {{ employee_notifications|length }}
           </small>
         </span>
       </a>
@@ -144,11 +144,11 @@
       </a>
     </li>
     <li>
-      <a href="{% url 'notifications' %}">
+      <a href="{% url 'notifications' 'manager' %}">
         <i class="fa fa-bell"></i> <span>Notifications</span>
         <span class="pull-right-container">
           <small class="label pull-right bg-yellow">
-            {{ notifications|length }}
+            {{ manager_notifications|length }}
           </small>
         </span>
       </a>

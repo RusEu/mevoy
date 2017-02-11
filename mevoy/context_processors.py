@@ -9,12 +9,12 @@ def global_processor(request):
     if request.user.is_anonymous():
         return {}
 
-    notifications = Notification.objects.filter(user=request.user)
+    notifications = Notification.objects.all().order_by('-datetime')
 
     context = {
         "SITE_NAME": get_current_site(request).name,
         "unknown_user_image": "http://www.wpclipart.com/signs_symbol/icons_oversized/male_user_icon.png",
-        "notifications": notifications
+        "employee_notifications": notifications.filter(user=request.user)
     }
 
     # TODO: OPTIMIZE ME
@@ -31,7 +31,8 @@ def global_processor(request):
         context.update(dict(
             manager_pending_requests=manager_requests.filter(status="pending"),
             manager_approved_requests=manager_requests.filter(status="approved"),
-            manager_declined_requests=manager_requests.filter(status="declined")
+            manager_declined_requests=manager_requests.filter(status="declined"),
+            manager_notification=notifications.filter(department=department)
         ))
 
     return context

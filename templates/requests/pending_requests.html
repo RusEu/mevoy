@@ -84,5 +84,21 @@
     });
   </script>
 
+  <script>
+   var sendData = function(method, request) {
+       var data = {"method": method,"request": request}
+       $.post(window.location, data, function(date) {
+           window.location.reload();
+       })
+   }
+    $('.approve').click(function() {
+        var request = $(this).attr("data-request");
+        sendData('approve', request);
+    })
+   $('.decline').click(function() {
+       var request = $(this).attr("data-request");
+       sendData('decline', request);
+   })
+  </script>
 
 {% endblock %}

@@ -1,10 +1,11 @@
 <tbody>
-  {% for request in requests %}
+  {% for vacation_request in requests %}
   <tr>
-    <td>{{ request.request_type.name }}</td>
-    <td>{{ request.description }} </td>
-    <td>{{ request.start_date|date:"r" }}</td>
-    <td>{{ request.end_date|date:"r" }}</td>
+    <td>{{ vacation_request.user.get_full_name }}</td>
+    <td>{{ vacation_request.request_type.name }}</td>
+    <td>{{ vacation_request.description }} </td>
+    <td>{{ vacation_request.start_date|date:"r" }}</td>
+    <td>{{ vacation_request.end_date|date:"r" }}</td>
     <td>
       <div class="btn-group">
         <button type="button" class="btn btn-default">Action</button>
@@ -13,8 +14,12 @@
           <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu" role="menu">
-          <li><a href="#">Decline</a></li>
-          <li><a href="#">Approve</a></li>
+          <li class="decline" data-request="{{ vacation_request.id }}">
+            <a href="#">Decline</a>
+          </li>
+          <li class="approve" data-request="{{ vacation_request.id }}">
+            <a href="#">Approve</a>
+          </li>
         </ul>
       </div>
     </td>

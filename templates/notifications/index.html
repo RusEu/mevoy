@@ -1,5 +1,5 @@
 {% extends 'layout_1.html' %}
-
+{% load staticfiles %}
 {% block content %}
 
   <!-- Content Wrapper. Contains page content -->
@@ -15,80 +15,50 @@
             <div class="box-header with-border">
               <h3 class="box-title">Notification messages</h3>
 
-              <div class="box-tools pull-right">
-                <div class="has-feedback">
-                  <input type="text" class="form-control input-sm" placeholder="Search Mail">
-                  <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                </div>
-              </div>
               <!-- /.box-tools -->
             </div>
             <!-- /.box-header -->
             <div class="box-body no-padding">
-              <div class="mailbox-controls">
+                <div class="mailbox-controls">
                 <!-- Check all button -->
-                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
-                </button>
+                    <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                        <i class="fa fa-square-o"></i>
+                    </button>
                 <div class="btn-group">
-                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+                  <button type="button" id="trash" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
                 </div>
                 <!-- /.btn-group -->
-                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-                <div class="pull-right">
-                  1-50/200
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                  </div>
-                  <!-- /.btn-group -->
-                </div>
-                <!-- /.pull-right -->
+                <button type="button" class="btn btn-default btn-sm refresh"><i class="fa fa-refresh"></i></button>
               </div>
               <div class="table-responsive mailbox-messages">
-                <table class="table table-hover table-striped">
-                  <tbody>
-                    {% for notification in notifications %}
-                    <tr>
-                      <td><input type="checkbox"></td>
-                      <td class="mailbox-name">
-                        {{ notification.user.get_fullname }}
-                      </td>
-                      <td class="mailbox-subject">
-                        <b>{{ notification.message }}</b>
-                      </td>
-                      <td align="right">{{ notification.datetime|date:'r' }}</td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
+                  <table id="datatable" class="table table-hover table-striped">
+                      <thead>
+                          <tr>
+                              <th></th>
+                              <th>Name</th>
+                              <th>Message</th>
+                              <th align="center">Date</th>
+                          </tr>
+                      </thead>
+                      <tfoot>
+                          <tr>
+                              <th></th>
+                              <th>Name</th>
+                              <th>Message</th>
+                              <th align="center">Date</th>
+                          </tr>
+                      </tfoot>
+                      {% if section == 'manager' %}
+                        {% include 'notifications/partials/manager_notifications.html' with notifications=manager_notifications %}
+                      {% elif section == 'employee' %}
+                        {% include 'notifications/partials/employee_notifications.html' with notifications=employee_notifications %}
+                      {% endif %}
                 </table>
                 <!-- /.table -->
               </div>
               <!-- /.mail-box-messages -->
             </div>
             <!-- /.box-body -->
-            <div class="box-footer no-padding">
-              <div class="mailbox-controls">
-                <!-- Check all button -->
-                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
-                </button>
-                <div class="btn-group">
-                  <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                </div>
-                <!-- /.btn-group -->
-                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-                <div class="pull-right">
-                  1-50/200
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                  </div>
-                  <!-- /.btn-group -->
-                </div>
-                <!-- /.pull-right -->
-              </div>
-            </div>
-          </div>
-          <!-- /. box -->
         </div>
         <!-- /.col -->
       </div>
@@ -96,4 +66,46 @@
     </section>
     <!-- /.content -->
   </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <!-- DataTables -->
+  <script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}">
+  </script>
+  <script src="{% static 'plugins/datatables/dataTables.bootstrap.min.js' %}">
+  </script>
+  <script>
+   var selectedAll = false;
+   var $checkboxes = $(':checkbox');
+
+   $('button.refresh').click(function(){
+       window.location.reload();
+   })
+   $('.checkbox-toggle').click(function() {
+       var selectedClass = 'fa-check-square-o';
+       var notSelectedClass = 'fa-square-o';
+       if (!selectedAll) {
+           $('.checkbox-toggle i').removeClass(notSelectedClass).addClass(selectedClass);
+           $checkboxes.prop('checked', true);
+       } else {
+           $('.checkbox-toggle i').removeClass(selectedClass).addClass(notSelectedClass);
+           $checkboxes.prop('checked', false);
+       }
+       selectedAll = !selectedAll;
+   })
+   $('#trash').click(function() {
+       var notifications = [];
+       $checkboxes.each(function(index, element){
+           if ($(this).is(":checked")) {
+               notifications.push($(this).val());
+           }
+       })
+       $.post(window.location, {"notifications": notifications}, function(date) {
+           $checkboxes.prop('checked', false);
+           window.location.reload();
+       })
+   })
+  </script>
+
 {% endblock %}

@@ -1,0 +1,14 @@
+<tbody>
+  {% for notification in notifications %}
+  <tr>
+    <td><input value="{{ notification.id }}" type="checkbox"></td>
+    <td class="mailbox-name">
+      {{ notification.user.get_full_name }}
+    </td>
+    <td class="mailbox-subject">
+      <b>{{ notification.message }}</b>
+    </td>
+    <td>{{ notification.datetime|date:'r' }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
