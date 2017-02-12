@@ -45,9 +45,12 @@ class Request(models.Model):
 
 
 class Modificator(models.Model):
+    SETTER = 'setter'
+    CALCULATOR = 'calculator'
+
     MODIFICATOR_TYPES = (
-        ('setter', _('Setter')),
-        ('calculator', _('Calculator')),
+        (SETTER, _('Setter')),
+        (CALCULATOR, _('Calculator')),
     )
 
     name = models.CharField(max_length=150)
