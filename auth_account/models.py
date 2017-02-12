@@ -1,5 +1,7 @@
 from django.db import models
+from django.apps import apps
 from django.utils import timezone
+from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import (AbstractBaseUser,
                                         PermissionsMixin)
@@ -66,6 +68,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         Sends an email to this User.
         '''
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+    @cached_property
+    def request_types(self):
+        RequestType = apps.get_model('vacation_request.RequestType')
+        return RequestType.objects.filter(
+            user_groups__in=self.groups.all()
+        ).distinct()
 
     def __unicode__(self):
         return "{}, {}".format(self.first_name, self.last_name)
