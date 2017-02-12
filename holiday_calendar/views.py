@@ -13,5 +13,14 @@ class CalendarPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(CalendarPageView, self).get_context_data(**kwargs)
-        context["request_types"] = RequestType.objects.all()
+        request_type = RequestType.objects.get(id=kwargs.get('request_type'))
+        section = kwargs.get('section')
+        department = self.request.session['department']
+        requests = Request.objects.filter(department__name=department)
+        users = User.objects.filter(id=self.request.user.id)
+        if section == 'manager':
+            users = User.objects.filter(user_requests__request_type=request_type)
+        context["requests"] = requests
+        context["users"] = users
+        context["section"] = section
         return context

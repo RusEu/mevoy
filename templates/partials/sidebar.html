@@ -69,12 +69,21 @@
         </li>
       </ul>
     </li>
-    <li>
-      <a href="{% url 'calendar' %}">
-        <i class="fa fa-calendar"></i> <span>Calendar</span>
+    <li class="treeview">
+      <a href="#">
+        <i class="fa fa-calendar"></i>
+        <span>Calendar</span>
       </a>
-    </li>
-    <li>
+      <ul class="treeview-menu">
+        {% for request_type in request.user.request_types %}
+        <li>
+          <a href="{% url 'calendar' 'employee' request_type.id %}">
+            {{ request_type.name }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </li>    <li>
       <a href="{% url 'notifications' 'employee' %}">
         <i class="fa fa-bell"></i> <span>Notifications</span>
         <span class="pull-right-container">
@@ -138,10 +147,20 @@
         </li>
       </ul>
     </li>
-    <li>
-      <a href="{% url 'calendar' %}">
-        <i class="fa fa-calendar"></i> <span>Calendar</span>
+    <li class="treeview">
+      <a href="#">
+        <i class="fa fa-calendar"></i>
+        <span>Calendar</span>
       </a>
+      <ul class="treeview-menu">
+        {% for request_type in request_types %}
+        <li>
+          <a href="{% url 'calendar' 'manager' request_type.id %}">
+            {{ request_type.name }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
     </li>
     <li>
       <a href="{% url 'notifications' 'manager' %}">
