@@ -7,5 +7,8 @@ class Notification(models.Model):
     message = models.CharField(max_length=100)
     datetime = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-datetime']
+
     def __unicode__(self):
         return self.name

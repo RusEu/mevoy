@@ -51,7 +51,7 @@
                       {% if section == 'manager' %}
                         {% include 'notifications/partials/manager_notifications.html' with notifications=manager_notifications %}
                       {% elif section == 'employee' %}
-                        {% include 'notifications/partials/employee_notifications.html' with notifications=employee_notifications %}
+                        {% include 'notifications/partials/employee_notifications.html' with notifications=request.user.notification_set.all %}
                       {% endif %}
                 </table>
                 <!-- /.table -->

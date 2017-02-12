@@ -88,7 +88,7 @@
         <i class="fa fa-bell"></i> <span>Notifications</span>
         <span class="pull-right-container">
           <small class="label pull-right bg-yellow">
-            {{ employee_notifications|length }}
+            {{ request.user.notification_set.all|length }}
           </small>
         </span>
       </a>

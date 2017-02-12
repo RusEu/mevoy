@@ -24,7 +24,7 @@
         <a href="{% url 'notifications' 'employee' %}">
           <i class="fa fa-bell"></i>
           <span class="label label-warning">
-            {{ employee_notifications|length }}
+            {{ request.user.notification_set.all|length }}
           </span>
         </a>
       </li>
