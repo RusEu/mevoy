@@ -76,5 +76,17 @@ class User(AbstractBaseUser, PermissionsMixin):
             user_groups__in=self.groups.all()
         ).distinct()
 
+    def approved_requests(self, department):
+        return self.user_requests.filter(department__name=department,
+                                         status='approved')
+
+    def pending_requests(self, department):
+        return self.user_requests.filter(department__name=department,
+                                         status="pending")
+
+    def declined_requests(self, department):
+        return self.user_requests.filter(department__name=department,
+                                         status="declined")
+
     def __unicode__(self):
         return "{}, {}".format(self.first_name, self.last_name)
