@@ -2,72 +2,110 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 
 from auth_account.factories import UserFactory, GroupFactory
-from auth_account.models import User, Group
-from vacation_request.factories import (ModificatorFactory,
-                                        RequestFactory,
+from vacation_request.factories import (RequestFactory,
                                         RequestTypeFactory)
-from holiday_calendar.factories import CalendarFactory, HolidayFactory
 from company.factories import DepartmentFactory, JobFactory
-from company.models import Department
 from notifications.factories import NotificationFactory
 
 
 class Command(BaseCommand):
 
-    def modificator(self):
-        return ModificatorFactory()
-
-    def holiday(self):
-        return HolidayFactory()
-
-    def calendar(self):
-        calendar = CalendarFactory.create(
-            days=(HolidayFactory for HolidayFactory in range(10))
-        )
-        return calendar
-
-    def user(self, username=None):
-        request_types = (RequestTypeFactory for RequestTypeFactory in range(5))
-        group = GroupFactory()
-        for request_type in request_types:
-            group.request_types.add(request_type)
-        modificators = (ModificatorFactory for ModificatorFactory in range(5))
-        if username:
-            user = UserFactory(
-                username=username,
-                modificators=modificators)
-            user.groups.add(group)
-        else:
-            user = UserFactory(modificators=modificators)
-            user.groups.add(group)
+    def user(self, username, job_title, group):
+        job = JobFactory(title=job_title)
+        user = UserFactory(username=username, job_title=job)
+        user.groups.add(group)
         user.set_password(settings.DEFAULT_PASSWORD)
         user.save()
         return user
 
-    def employee(self, username="employee"):
-        employee = self.user(username=username)
-        return employee
-
-    def manager(self, username="manager"):
-        manager = self.user(username=username)
-        return manager
-
-    def department(self):
-        department = DepartmentFactory()
-        department.employees.add(self.employee())
-        department.managers.add(self.manager())
+    def department(self, department_name, employee, manager):
+        department = DepartmentFactory(name=department_name)
+        department.employees.add(employee)
+        department.managers.add(manager)
+        department.save()
         return department
 
-    def handle(self, *args, **options):
-        Department.objects.all().delete()
-        for i in range(3):
-            self.department()
-        for i in range(10):
-            employee = User.objects.get(username="employee")
-            manager = User.objects.get(username="manager")
+    def create_department_IT(self):
+        group = GroupFactory()
+        for i in range(5):
+            group.request_types.add(RequestTypeFactory())
+        employee = self.user(username="developer",
+                             job_title="Developer",
+                             group=group)
+        manager = self.user(username="cto",
+                            job_title="CTO",
+                            group=group)
+        department = self.department("IT", employee, manager)
+
+        for request_type in group.request_types.all():
+            RequestFactory(user=employee,
+                           department=department,
+                           status='pending',
+                           request_type=request_type)
+            RequestFactory(user=employee,
+                           department=department,
+                           status='approved',
+                           request_type=request_type)
+            RequestFactory(user=employee,
+                           department=department,
+                           status='declined',
+                           request_type=request_type)
+        for i in range(5):
             NotificationFactory(user=employee)
-            NotificationFactory(user=manager)
-        for i in range(10):
-            RequestFactory(user=employee, status="approved")
-            RequestFactory(user=employee, status="declined")
-            RequestFactory(user=employee, status="pending")
+
+    def create_department_SALES(self):
+        group = GroupFactory()
+        for i in range(5):
+            group.request_types.add(RequestTypeFactory())
+        employee = self.user(username="commercial",
+                             group=group,
+                             job_title="commercial")
+        manager = self.user(username="sales_manager",
+                            group=group,
+                            job_title="sales manager")
+        department = self.department("SALES", employee, manager)
+        for request_type in group.request_types.all():
+            RequestFactory(user=employee,
+                           request_type=request_type,
+                           department=department,
+                           status='pending')
+            RequestFactory(user=employee,
+                           request_type=request_type,
+                           department=department,
+                           status='approved')
+            RequestFactory(user=employee,
+                           request_type=request_type,
+                           department=department,
+                           status='declined')
+        for i in range(5):
+            NotificationFactory(user=employee)
+
+    def create_department_PRODUCTION(self):
+        group = GroupFactory()
+        for i in range(5):
+            group.request_types.add(RequestTypeFactory())
+        employee = self.user(username="product_manager",
+                             group=group,
+                             job_title="product manager")
+        manager = employee
+        department = self.department("PRODUCT", employee, manager)
+        for request_type in group.request_types.all():
+            RequestFactory(user=employee,
+                           request_type=request_type,
+                           department=department,
+                           status='pending')
+            RequestFactory(user=employee,
+                           request_type=request_type,
+                           department=department,
+                           status='approved')
+            RequestFactory(user=employee,
+                           request_type=request_type,
+                           department=department,
+                           status='declined')
+        for i in range(5):
+            NotificationFactory(user=employee)
+
+    def handle(self, *args, **options):
+        self.create_department_IT()
+        self.create_department_SALES()
+        self.create_department_PRODUCTION()
