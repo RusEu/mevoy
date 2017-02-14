@@ -153,7 +153,7 @@
         <span>Calendar</span>
       </a>
       <ul class="treeview-menu">
-        {% for request_type in request_types %}
+        {% for request_type in department_request_types %}
         <li>
           <a href="{% url 'calendar' 'manager' request_type.id %}">
             {{ request_type.name }}

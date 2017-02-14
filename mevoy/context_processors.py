@@ -1,6 +1,6 @@
 from django.contrib.sites.shortcuts import get_current_site
 
-from vacation_request.models import Request
+from vacation_request.models import Request, RequestType
 from notifications.models import Notification
 
 
@@ -25,7 +25,10 @@ def global_processor(request):
         ))
     if request.session.get('is_manager'):
         requests = Request.objects.filter(department__name=department)
+        request_types = RequestType.objects.filter(
+            request__in=requests).distinct()
         context.update(dict(
+            department_request_types=request_types,
             manager_pending_requests=requests.filter(status="pending"),
             manager_approved_requests=requests.filter(status="approved"),
             manager_declined_requests=requests.filter(status="declined"),
