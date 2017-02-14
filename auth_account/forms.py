@@ -6,12 +6,14 @@ from company.models import Department
 
 
 class LoginForm(AuthenticationForm):
-    error_messages = {
-        'department_incorrect': _('The provided department does not exist'),
-        'department_not_allowed': _('You are not allowed to join this department')
-    }
-
     department = forms.CharField(max_length=100)
+
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        self.error_messages.update({
+            'department_incorrect': _('The provided department does not exist'),
+            'department_not_allowed': _('You are not allowed to join this department')
+    })
 
     def clean_department(self):
         department = Department.objects.filter(
