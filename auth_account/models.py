@@ -10,6 +10,14 @@ from django.core.mail import send_mail
 
 
 class Group(DjangoGroup):
+    """
+    A user group to define the request types that an employee can make and a
+    holiday calendar that an user can have.
+    Can also set the permissions that a user have to modify an model
+
+    :param request_types: The request types a user can make.
+    :param holiday_calendar: Calendar with all the holidays a user have.
+    """
     request_types = models.ManyToManyField('vacation_request.RequestType',
                                            related_name="user_groups")
     holiday_calendar = models.ForeignKey('holiday_calendar.Calendar')
@@ -71,20 +79,38 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @cached_property
     def request_types(self):
+        """
+        All the request types that a user can have
+        """
         RequestType = apps.get_model('vacation_request.RequestType')
         return RequestType.objects.filter(
             user_groups__in=self.groups.all()
         ).distinct()
 
     def approved_requests(self, department):
+        """
+        Approved requests of the current user for an specific department
+        :param department: The department where the request has been made.
+        :type department: string
+        """
         return self.user_requests.filter(department__name=department,
                                          status='approved')
 
     def pending_requests(self, department):
+        """
+        Pending requests of the current user for an specific department
+        :param department: The department where the request has been made.
+        :type department: string
+        """
         return self.user_requests.filter(department__name=department,
                                          status="pending")
 
     def declined_requests(self, department):
+        """
+        Declined requests of the current user for an specific department
+        :param department: The department where the request has been made.
+        :type department: string
+        """
         return self.user_requests.filter(department__name=department,
                                          status="declined")
 

@@ -4,6 +4,13 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class RequestType(models.Model):
+    """
+    The request type that a user can make.
+    :param name: The name of the request_types
+    :param available_days: How many free days can an employee enjoy of this
+                           request type.
+    :param period: Describes the period for the available_days(week/month/year)
+    """
     PERIOD_TYPES = (
         ('week', _('Week')),
         ('month', _('Month')),
@@ -19,6 +26,17 @@ class RequestType(models.Model):
 
 
 class Request(models.Model):
+    """
+    The request that a user makes to receive free working days.
+    :param user: The user that makes the request.
+    :param start_date: The date when the user vacations will start.
+    :param end_date: The date when the user vacations will end.
+    :param description: The reason why a user is requesting a vacations.
+    :param requst_type: The type of the request
+    :department: The department that will receive the request and will
+                 approve/decline it.
+    :status: The status that a request can have(pending/approved/declined)
+    """
     APPROVED = "approved"
     DECLINED = "declined"
     PENDING = "pending"
@@ -45,6 +63,19 @@ class Request(models.Model):
 
 
 class Modificator(models.Model):
+    """
+    A modificator is used to modify a user free days for a request type.
+    :param name: The name of the modificator.
+    :param request_type: The available_days of the request type that should
+                         modify.
+    :param days: The days that will modify.
+    :param modificator_type: The type of the modificator.
+                             If the modificator is a setter, will set the days
+                             that a user can request for the request type.
+                             If the modificator is a calculator will add or
+                             substract the number of days that a user can
+                             request for a request type/
+    """
     SETTER = 'setter'
     CALCULATOR = 'calculator'
 
