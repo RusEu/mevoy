@@ -1,2 +1,21 @@
-*.pyc
-db.sqlite3
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Testing database
+*.sqlite3
+
+# Translations
+*.mo
+*.pot
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# dotenv
+.env
+# virtualenv
+.venv
+venv/
+ENV/
