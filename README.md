@@ -9,7 +9,12 @@ You will need: python3, pip and git
 - Download the repository
 `git clone git@github.com:DictGet/mevoy.git`
 
-- Install the python requirements
+- Install the python requirements. Better in a virtualenv
+
+`python3 -m venv ~/.virtualenvs/mevoy`  # feel free to do this as you want
+
+`source ~/.virtualenvs/mevoy/bin/activate`
+
 `pip install -r requirements.txt`
 
 - Create the database and run the migrations
