@@ -40,14 +40,23 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+
+]
+
+MEVOY_APPS = [
     'company',
     'auth_account',
     'holiday_calendar',
     'vacation_request',
     'notifications',
     'utils',
+]
+
+THIRD_PARTY_APPS = [
     'debug_toolbar',
 ]
+
+INSTALLED_APPS += MEVOY_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
