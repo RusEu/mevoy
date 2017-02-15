@@ -17,14 +17,16 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form role="form">
+            <form role="form" method="POST" action="#">
+              {% csrf_token %}
               <div class="box-body">
                 <div class="form-group">
                   <label for="request_type">Request Type</label>
                   <select type="text" class="form-control"
+                          name="request_type"
                           id="request_type"
                           placeholder="Request ">
-                    {% for request_type in request_types %}
+                    {% for request_type in request.user.request_types %}
                         <option value="request_type.id">
                             {{ request_type.name }}
                         </option>
@@ -35,12 +37,14 @@
                   <label for="description">Description</label>
                   <input type="text" class="form-control"
                          id="description"
+                         name="description"
                          placeholder="Description">
                 <div class="form-group">
                   <label for="start_date">Start Date</label>
                   <div class="input-group">
                     <input type="datetime-local"
                            class="form-control"
+                           name="start_date"
                            placeholder="Start Date">
                     <span class="input-group-addon">
                       <i class="fa fa-calendar"></i>
@@ -52,6 +56,7 @@
                   <div class="input-group">
                     <input type="datetime-local"
                            class="form-control"
+                           name="end_date"
                            placeholder="End Date">
                     <span class="input-group-addon">
                       <i class="fa fa-calendar"></i>
@@ -62,7 +67,9 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary pull-right">Submit</button>
+                <button type="submit" class="btn btn-primary pull-right">
+                  Submit
+                </button>
               </div>
             </form>
           </div>
