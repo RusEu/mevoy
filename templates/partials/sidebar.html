@@ -39,11 +39,6 @@
       </a>
       <ul class="treeview-menu">
         <li>
-          <a href="{% url 'new_request' %}">
-            New Request
-          </a>
-        </li>
-        <li>
           <a href="{% url 'pending_requests' %}">
             <small class="label pull-right bg-yellow" title="Pending">
               {{ manager_pending_requests|length }}
