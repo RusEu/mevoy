@@ -16,7 +16,6 @@ class NotificationsPageView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(NotificationsPageView, self).get_context_data(*args,
                                                                       **kwargs)
-        context["section"] = kwargs.get('section')
         return context
 
     def post(self, request, *args, **kwargs):

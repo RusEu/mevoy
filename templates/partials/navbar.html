@@ -21,7 +21,7 @@
     <ul class="nav navbar-nav">
       <!-- Messages: style can be found in dropdown.less-->
       <li class="messages-menu">
-        <a href="{% url 'notifications' 'employee' %}">
+        <a href="{% url 'notifications' %}">
           <i class="fa fa-bell"></i>
           <span class="label label-warning">
             {{ request.user.notification_set.all|length }}

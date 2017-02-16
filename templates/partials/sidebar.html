@@ -17,84 +17,6 @@
       <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
     </div>
   </div>
-  {% if request.session.is_employee %}
-  <ul class="sidebar-menu">
-    <li class="header">EMPLOYEE NAVIGATION</li>
-    <li class="treeview">
-      <a href="#">
-        <i class="fa fa-files-o"></i>
-        <span>Requests</span>
-        <span class="pull-right-container">
-          <small class="label pull-right bg-red"
-                 title="Declined">
-            {{ employee_declined_requests|length }}
-          </small>
-          <small class="label pull-right bg-green"
-                 title="Approved">
-            {{ employee_approved_requests|length }}
-          </small>
-          <small class="label pull-right bg-yellow"
-                 title="Pending">{{ employee_pending_requests|length }}</small>
-        </span>
-      </a>
-      <ul class="treeview-menu">
-        <li>
-          <a href="{% url 'new_request' %}">
-            New Request
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'pending_requests' 'employee' %}">
-            <small class="label pull-right bg-yellow" title="Pending">
-              {{ employee_pending_requests|length }}
-            </small>
-            Pending Requests
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'declined_requests' 'employee' %}">
-            <small class="label pull-right bg-red" title="Declined">
-              {{ employee_declined_requests|length }}
-            </small>
-            Declined Requests
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'approved_requests' 'employee' %}">
-            <small class="label pull-right bg-green" title="Approved">
-              {{ employee_approved_requests|length }}
-            </small>
-            Approved Requests
-          </a>
-        </li>
-      </ul>
-    </li>
-    <li class="treeview">
-      <a href="#">
-        <i class="fa fa-calendar"></i>
-        <span>Calendar</span>
-      </a>
-      <ul class="treeview-menu">
-        {% for request_type in request.user.request_types %}
-        <li>
-          <a href="{% url 'calendar' 'employee' request_type.id %}">
-            {{ request_type.name }}
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
-    </li>    <li>
-      <a href="{% url 'notifications' 'employee' %}">
-        <i class="fa fa-bell"></i> <span>Notifications</span>
-        <span class="pull-right-container">
-          <small class="label pull-right bg-yellow">
-            {{ request.user.notification_set.all|length }}
-          </small>
-        </span>
-      </a>
-    </li>
-  </ul>
-  {% endif %}
   {% if request.session.is_manager %}
   <ul class="sidebar-menu">
     <li class="header">MANAGER NAVIGATION</li>
@@ -122,7 +44,7 @@
           </a>
         </li>
         <li>
-          <a href="{% url 'pending_requests' 'manager' %}">
+          <a href="{% url 'pending_requests' %}">
             <small class="label pull-right bg-yellow" title="Pending">
               {{ manager_pending_requests|length }}
             </small>
@@ -130,7 +52,7 @@
           </a>
         </li>
         <li>
-          <a href="{% url 'declined_requests' 'manager' %}">
+          <a href="{% url 'declined_requests' %}">
             <small class="label pull-right bg-red" title="Declined">
               {{ manager_declined_requests|length }}
             </small>
@@ -138,7 +60,7 @@
           </a>
         </li>
         <li>
-          <a href="{% url 'approved_requests' 'manager' %}">
+          <a href="{% url 'approved_requests' %}">
             <small class="label pull-right bg-green" title="Approved">
               {{ manager_approved_requests|length }}
             </small>
@@ -155,7 +77,7 @@
       <ul class="treeview-menu">
         {% for request_type in department_request_types %}
         <li>
-          <a href="{% url 'calendar' 'manager' request_type.id %}">
+          <a href="{% url 'calendar' request_type.id %}">
             {{ request_type.name }}
           </a>
         </li>
@@ -163,11 +85,88 @@
       </ul>
     </li>
     <li>
-      <a href="{% url 'notifications' 'manager' %}">
+      <a href="{% url 'notifications' %}">
         <i class="fa fa-bell"></i> <span>Notifications</span>
         <span class="pull-right-container">
           <small class="label pull-right bg-yellow">
             {{ manager_notifications|length }}
+          </small>
+        </span>
+      </a>
+    </li>
+  </ul>
+  {% else %}
+  <ul class="sidebar-menu">
+    <li class="header">EMPLOYEE NAVIGATION</li>
+    <li class="treeview">
+      <a href="#">
+        <i class="fa fa-files-o"></i>
+        <span>Requests</span>
+        <span class="pull-right-container">
+          <small class="label pull-right bg-red"
+                 title="Declined">
+            {{ employee_declined_requests|length }}
+          </small>
+          <small class="label pull-right bg-green"
+                 title="Approved">
+            {{ employee_approved_requests|length }}
+          </small>
+          <small class="label pull-right bg-yellow"
+                 title="Pending">{{ employee_pending_requests|length }}</small>
+        </span>
+      </a>
+      <ul class="treeview-menu">
+        <li>
+          <a href="{% url 'new_request' %}">
+            New Request
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'pending_requests' %}">
+            <small class="label pull-right bg-yellow" title="Pending">
+              {{ employee_pending_requests|length }}
+            </small>
+            Pending Requests
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'declined_requests' %}">
+            <small class="label pull-right bg-red" title="Declined">
+              {{ employee_declined_requests|length }}
+            </small>
+            Declined Requests
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'approved_requests' %}">
+            <small class="label pull-right bg-green" title="Approved">
+              {{ employee_approved_requests|length }}
+            </small>
+            Approved Requests
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li class="treeview">
+      <a href="#">
+        <i class="fa fa-calendar"></i>
+        <span>Calendar</span>
+      </a>
+      <ul class="treeview-menu">
+        {% for request_type in request.user.request_types %}
+        <li>
+          <a href="{% url 'calendar' request_type.id %}">
+            {{ request_type.name }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </li>    <li>
+      <a href="{% url 'notifications' %}">
+        <i class="fa fa-bell"></i> <span>Notifications</span>
+        <span class="pull-right-container">
+          <small class="label pull-right bg-yellow">
+            {{ request.user.notification_set.all|length }}
           </small>
         </span>
       </a>

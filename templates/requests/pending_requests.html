@@ -27,10 +27,10 @@
                   <th>Status</th>
                 </tr>
                 </thead>
-                {% if section == 'employee' %}
-                  {% include 'requests/partials/employee_pending_requests.html' with requests=employee_pending_requests %}
-                {% elif section == 'manager' %}
+                {% if request.session.is_manager %}
                   {% include 'requests/partials/manager_pending_requests.html' with requests=manager_pending_requests %}
+                {% else %}
+                  {% include 'requests/partials/employee_pending_requests.html' with requests=employee_pending_requests %}
                 {% endif %}
                 <tfoot>
                 <tr>

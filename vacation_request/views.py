@@ -17,11 +17,6 @@ class PendingRequestsPageView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(PendingRequestsPageView, self).dispatch(*args, **kwargs)
 
-    def get_context_data(self, *args, **kwargs):
-        context = super(PendingRequestsPageView,self).get_context_data(*args, **kwargs)
-        context["section"] = kwargs.get('section')
-        return context
-
     def notify_user(self, vacation_request):
         message = _("Department: {} has {} your request".format(
             vacation_request.department.name, vacation_request.status))
@@ -49,19 +44,9 @@ class PendingRequestsPageView(TemplateView):
 class ApprovedRequestsPageView(TemplateView):
     template_name = "requests/approved_requests.html"
 
-    def get_context_data(self, **kwargs):
-        context = super(ApprovedRequestsPageView, self).get_context_data(**kwargs)
-        context["section"] = kwargs.get('section')
-        return context
-
 
 class DeclinedRequestsPageView(TemplateView):
     template_name = "requests/declined_requests.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(DeclinedRequestsPageView, self).get_context_data(**kwargs)
-        context["section"] = kwargs.get('section')
-        return context
 
 
 class NewRequestPageView(FormView):

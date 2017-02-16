@@ -30,11 +30,9 @@ class LoginUserPageView(FormView):
         login(self.request, form.get_user())
         department = form.cleaned_data["department"]
         self.request.session["department"] = department.name
-        if self.request.user in department.employees.all():
-            self.request.session["is_employee"] = True
-            success_url = reverse('new_request')
-        if self.request.user in department.managers.all():
+        if form.cleaned_data.get('login_as_manager'):
             self.request.session["is_manager"] = True
-            success_url = reverse('pending_requests',
-                                  kwargs={"section": "manager"})
+            success_url = reverse("pending_requests")
+        else:
+            success_url = reverse("new_request")
         return HttpResponseRedirect(success_url)
