@@ -10,6 +10,7 @@ class RequestType(models.Model):
     :param available_days: How many free days can an employee enjoy of this
                            request type.
     :param period: Describes the period for the available_days(week/month/year)
+    :param approvals: How many managers should approve the request.
     """
     PERIOD_TYPES = (
         ('week', _('Week')),
@@ -20,6 +21,7 @@ class RequestType(models.Model):
     name = models.CharField(max_length=150)
     available_days = models.IntegerField(default=0)
     period = models.CharField(max_length=100, choices=PERIOD_TYPES)
+    approvals = models.IntegerField(default=1)
 
     def __unicode__(self):
         return self.name
@@ -33,9 +35,10 @@ class Request(models.Model):
     :param end_date: The date when the user vacations will end.
     :param description: The reason why a user is requesting a vacations.
     :param requst_type: The type of the request
-    :department: The department that will receive the request and will
-                 approve/decline it.
-    :status: The status that a request can have(pending/approved/declined)
+    :param department: The department that will receive the request and will
+                       approve/decline it.
+    :param status: The status that a request can have(pending/approved/declined)
+    :param approvals: How many managers has approved the request
     """
     APPROVED = "approved"
     DECLINED = "declined"
@@ -56,6 +59,7 @@ class Request(models.Model):
     status = models.CharField(max_length=100,
                               choices=STATUS_TYPES,
                               default='pending')
+    approvals = models.IntegerField(default=0)
 
     def __unicode__(self):
         return "{}, {}".format(self.user.email,
