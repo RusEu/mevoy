@@ -1,6 +1,8 @@
 import datetime
 import factory
 
+from django.utils import timezone
+
 from auth_account.factories import UserFactory
 from company.factories import DepartmentFactory
 
@@ -22,8 +24,8 @@ class RequestFactory(factory.django.DjangoModelFactory):
         django_get_or_create = ('start_date', 'end_date',)
 
     user = factory.SubFactory(UserFactory)
-    start_date = factory.LazyFunction(datetime.datetime.now)
-    end_date = factory.LazyFunction(datetime.datetime.now)
+    start_date = factory.LazyFunction(timezone.now)
+    end_date = factory.LazyFunction(timezone.now)
     description = factory.Faker('name')
     department = factory.SubFactory(DepartmentFactory)
     request_type = factory.SubFactory(RequestTypeFactory)
