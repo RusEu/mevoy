@@ -1,6 +1,6 @@
 # Mevoy!
 
-Django Web application to manage employees absence requests: (vacaction, personal days, remote work ...)
+Django Web application to manage employees absence requests: (vacation, personal days, remote work ...)
 
 ## Installation
 
