@@ -114,5 +114,24 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.user_requests.filter(department__name=department,
                                          status="declined")
 
+    def days_left(self, request_type):
+        """
+        :type request_type: Instance of `class`: `vacation_request.RequestType`
+        :return : The total number of free days left for a request type
+        """
+        Modificator = apps.get_model('vacation_request.Modificator')
+        available_days = request_type.available_days
+        period = request_type.period
+
+        setter = self.modificators.filter(
+            modificator_type=Modificator.SETTER).first()
+        if setter:
+            available_days = setter.days
+        else:
+            for modificator in self.modificators.all():
+                available_days += modificator.days
+
+        return dict(available_days=available_days, period=period)
+
     def __unicode__(self):
         return "{}, {}".format(self.first_name, self.last_name)
