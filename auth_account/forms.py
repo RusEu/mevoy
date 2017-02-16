@@ -1,5 +1,5 @@
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
-from django.utils.translation import ugettext, ugettext_lazy as _
+from django.contrib.auth.forms import AuthenticationForm
+from django.utils.translation import ugettext as _
 from django import forms
 
 from company.models import Department
@@ -7,13 +7,18 @@ from company.models import Department
 
 class LoginForm(AuthenticationForm):
     department = forms.CharField(max_length=100)
+    login_as_manager = forms.BooleanField(required=False)
 
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.error_messages.update({
-            'department_incorrect': _('The provided department does not exist'),
-            'department_not_allowed': _('You are not allowed to join this department')
-    })
+            'department_incorrect': _(
+                'The provided department does not exist'),
+            'department_user_not_allowed': _(
+                'You are not allowed to join this department'),
+            'department_user_not_manager': _(
+                'You are not allowed to join the department as a manager')
+        })
 
     def clean_department(self):
         department = Department.objects.filter(
@@ -43,13 +48,20 @@ class LoginForm(AuthenticationForm):
             )
         department = self.cleaned_data.get('department')
 
-        user_is_employee = user in department.employees.all()
-        user_is_manager = user in department.managers.all()
-        if not any([user_is_employee, user_is_manager]):
-            raise forms.ValidationError(
-                self.error_messages['department_not_allowed'],
-                code='department_not_allowed'
-            )
+        if self.cleaned_data.get('login_as_manager', False):
+            # Check if the current user is a manager of the department
+            if user not in department.managers.all():
+                raise forms.ValidationError(
+                    self.error_messages['department_user_not_manager'],
+                    code='department_user_not_manager'
+                )
+        else:
+            if user not in department.employees.all():
+                # Check if the user is an employee of the department
+                raise forms.ValidationError(
+                    self.error_messages["department_user_not_allowed"],
+                    code="department_user_not_allowed"
+                )
 
 
 class ProfileForm(forms.Form):
