@@ -12,3 +12,83 @@
   {% endblock %}
 </body>
 {% endblock %}
+{% block footer %}
+  {{ block.super }}
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+      <li class="active">
+        <a href="#control-sidebar-departments-tab" data-toggle="tab">
+          <i class="fa fa-home"></i>
+        </a>
+      </li>
+      <li>
+        <a href="#control-sidebar-settings-tab" data-toggle="tab">
+          <i class="fa fa-gears"></i>
+        </a>
+      </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <!-- Settings tab content -->
+      <div class="tab-pane active" id="control-sidebar-departments-tab">
+        <form action="">
+          <h3 class="control-sidebar-heading">Change to other department</h3>
+
+          {% for department in request.user.manager_departments.all %}
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              {{ department.name }}
+              <input type="radio" name="department" class="pull-right" value="{{ department.id }}" {% if request.session.department == department.name %} checked {% endif %}>
+            </label>
+          </div>
+          {% endfor %}
+          <div class="form-group">
+            <label class="control-sidebar-subheading">
+              Other department
+              <input type="radio" name="department" class="pull-right" value="TEST">
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="tab-pane" id="control-sidebar-settings-tab">
+        <h3 class="control-sidebar-heading">Configuration</h3>
+        <ul class="control-sidebar-menu">
+          <li>
+            <a href="javascript:void(0)">
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Register new user</h4>
+
+                <p>Add new user in the department</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Manage holidays</h4>
+
+                <p>Create a calendar and add the holidays</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)">
+              <div class="menu-info">
+                <h4 class="control-sidebar-subheading">Add modificator</h4>
+
+                <p>Add modificator to modify users's free days left</p>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+{% endblock %}
