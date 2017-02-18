@@ -23,6 +23,9 @@
               <table id="datatable" class="table table-bordered table-striped">
                 <thead>
                 <tr>
+                  {% if request.session.is_manager %}
+                  <th>User</th>
+                  {% endif %}
                   <th>Request Type</th>
                   <th>Description</th>
                   <th>Start Date</th>
@@ -37,6 +40,9 @@
                 {% endif %}
                 <tfoot>
                 <tr>
+                  {% if request.session.is_manager %}
+                  <th>User</th>
+                  {% endif %}
                   <th>Request Type</th>
                   <th>Description</th>
                   <th>Start Date</th>

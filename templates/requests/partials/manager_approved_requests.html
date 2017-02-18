@@ -1,13 +1,14 @@
 <tbody>
-  {% for request in requests %}
+  {% for vacation_request in requests %}
   <tr>
-    <td>{{ request.request_type.name }}</td>
-    <td>{{ request.description }} </td>
-    <td>{{ request.start_date|date:"r" }}</td>
-    <td>{{ request.end_date|date:"r" }}</td>
+    <td>{{ vacation_request.user.get_full_name }} </td>
+    <td>{{ vacation_request.request_type.name }}</td>
+    <td>{{ vacation_request.description }} </td>
+    <td>{{ vacation_request.start_date|date:"r" }}</td>
+    <td>{{ vacation_request.end_date|date:"r" }}</td>
     <td>
-      <span class="label label-warning">
-        {{ request.status }}
+      <span class="label label-success">
+        {{ vacation_request.status }}
       </span>
     </td>
   </tr>
