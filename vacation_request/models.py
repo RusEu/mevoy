@@ -34,11 +34,11 @@ class Request(models.Model):
     :param start_date: The date when the user vacations will start.
     :param end_date: The date when the user vacations will end.
     :param description: The reason why a user is requesting a vacations.
-    :param requst_type: The type of the request
+    :param request_type: The type of the request
     :param department: The department that will receive the request and will
                        approve/decline it.
     :param status: The status that a request can have(pending/approved/declined)
-    :param approvals: How many managers has approved the request
+    :param approvals: How many managers have approved the request
     """
     APPROVED = "approved"
     DECLINED = "declined"
@@ -75,10 +75,10 @@ class Modificator(models.Model):
     :param days: The days that will modify.
     :param modificator_type: The type of the modificator.
                              If the modificator is a setter, will set the days
-                             that a user can request for the request type.
+                             that a user can request.
                              If the modificator is a calculator will add or
                              substract the number of days that a user can
-                             request for a request type/
+                             request.
     """
     SETTER = 'setter'
     CALCULATOR = 'calculator'
