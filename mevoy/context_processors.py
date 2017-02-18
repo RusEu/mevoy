@@ -15,14 +15,6 @@ def global_processor(request):
 
     department = request.session["department"]
 
-    # TODO: OPTIMIZE ME
-    if request.session.get('is_employee'):
-        employee = request.user
-        context.update(dict(
-            employee_pending_requests=employee.pending_requests(department),
-            employee_approved_requests=employee.approved_requests(department),
-            employee_declined_requests=employee.declined_requests(department)
-        ))
     if request.session.get('is_manager'):
         requests = Request.objects.filter(department__name=department)
         request_types = RequestType.objects.filter(
@@ -35,5 +27,11 @@ def global_processor(request):
             manager_notification=Notification.objects.filter(
                 department__name=department)
         ))
-
+    else:
+        employee = request.user
+        context.update(dict(
+            employee_pending_requests=employee.pending_requests(department),
+            employee_approved_requests=employee.approved_requests(department),
+            employee_declined_requests=employee.declined_requests(department)
+        ))
     return context

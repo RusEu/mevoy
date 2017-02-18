@@ -48,9 +48,9 @@
                               <th align="center">Date</th>
                           </tr>
                       </tfoot>
-                      {% if section == 'manager' %}
+                      {% if request.session.is_manager %}
                         {% include 'notifications/partials/manager_notifications.html' with notifications=manager_notifications %}
-                      {% elif section == 'employee' %}
+                      {% else %}
                         {% include 'notifications/partials/employee_notifications.html' with notifications=request.user.notification_set.all %}
                       {% endif %}
                 </table>
