@@ -49,10 +49,17 @@
                     {% endif %}"
                class="img-circle" alt="User Image">
 
-            <p>{{ request.user.job_title.title }}</p>
-            <p>
-              <small>Department: {{ request.session.department }}</small>
-            </p>
+          <p>{{ request.user.job_title.title }}</p>
+          <p>
+            <small>
+              {{ request.session.department }}
+              {% if request.session.is_manager %}
+                Manager
+              {% else %}
+                Employee
+              {% endif %}
+            </small>
+          </p>
           </li>
           <!-- Menu Footer-->
           <li class="user-footer">
@@ -68,11 +75,13 @@
           </li>
         </ul>
       </li>
+      {% if request.session.is_manager %}
       <li>
         <a href="#" data-toggle="control-sidebar">
           <i class="fa fa-gears"></i>
         </a>
       </li>
+      {% endif %}
     </ul>
   </div>
 </nav>
