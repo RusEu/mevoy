@@ -33,7 +33,7 @@
                 {% if request.session.is_manager %}
                   {% include 'requests/partials/manager_pending_requests.html' with requests=manager_pending_requests %}
                 {% else %}
-                  {% include 'requests/partials/employee_pending_requests.html' with requests=employee_pending_requests %}
+                  {% include 'requests/partials/employee_pending_requests.html' with requests=request.user.pending_requests %}
                 {% endif %}
                 <tfoot>
                 <tr>
@@ -91,8 +91,8 @@
   </script>
 
   <script>
-   var sendData = function(method, request) {
-       var data = {"method": method,"request": request}
+   var sendData = function(action, request) {
+       var data = {"action": action,"request": request}
        $.post(window.location, data, function(date) {
            window.location.reload();
        })

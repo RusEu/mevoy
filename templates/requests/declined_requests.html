@@ -34,7 +34,7 @@
                 {% if request.session.is_manager %}
                   {% include 'requests/partials/manager_declined_requests.html' with requests=manager_declined_requests %}
                 {% else %}
-                  {% include 'requests/partials/employee_declined_requests.html' with requests=employee_declined_requests %}
+                  {% include 'requests/partials/employee_declined_requests.html' with requests=request.user.declined_requests %}
                 {% endif %}
                 <tfoot>
                 <tr>
