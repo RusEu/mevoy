@@ -8,7 +8,7 @@
     <td class="mailbox-subject">
       <b>{{ notification.message }}</b>
     </td>
-    <td>{{ notification.datetime|date:'r' }}</td>
+    <td>{{ notification.creation_date|date:'r' }}</td>
   </tr>
   {% endfor %}
 </tbody>
