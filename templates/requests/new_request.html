@@ -27,7 +27,7 @@
                           id="request_type"
                           placeholder="Request ">
                     {% for request_type in request.user.request_types %}
-                        <option value="request_type.id">
+                        <option value="{{ request_type.id }}">
                             {{ request_type.name }}
                         </option>
                     {% endfor %}
