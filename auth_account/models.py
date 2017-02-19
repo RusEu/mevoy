@@ -87,32 +87,39 @@ class User(AbstractBaseUser, PermissionsMixin):
             user_groups__in=self.groups.all()
         ).distinct()
 
-    def approved_requests(self, department):
+    def approved_requests(self):
         """
         Approved requests of the current user for an specific department
         :param department: The department where the request has been made.
         :type department: string
         """
-        return self.user_requests.filter(department__name=department,
+        return self.user_requests.filter(department=self.employee_department,
                                          status='approved')
 
-    def pending_requests(self, department):
+    def pending_requests(self):
         """
         Pending requests of the current user for an specific department
         :param department: The department where the request has been made.
         :type department: string
         """
-        return self.user_requests.filter(department__name=department,
+        return self.user_requests.filter(department=self.employee_department,
                                          status="pending")
 
-    def declined_requests(self, department):
+    def declined_requests(self):
         """
         Declined requests of the current user for an specific department
         :param department: The department where the request has been made.
         :type department: string
         """
-        return self.user_requests.filter(department__name=department,
+        return self.user_requests.filter(department=self.employee_department,
                                          status="declined")
+
+    @cached_property
+    def employee_department(self):
+        """
+        :return: The department where the user is an employee.
+        """
+        return self.employee_departments.first()
 
     def days_left(self, request_type):
         """
