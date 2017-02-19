@@ -4,6 +4,8 @@ from django import forms
 
 from company.models import Department
 
+from auth_account.models import User
+
 
 class LoginForm(AuthenticationForm):
     department = forms.CharField(max_length=100)
@@ -64,5 +66,41 @@ class LoginForm(AuthenticationForm):
                 )
 
 
-class ProfileForm(forms.Form):
-    pass
+class ProfileForm(forms.ModelForm):
+    """Form to modify the user's profile"""
+    error_messages = {
+        "email_not_unique": _("An account with the provided email already exists")
+    }
+
+    job_title = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', "disabled": "disabled"}
+        )
+    )
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email', 'gender',
+                  'profile_picture', 'job_title')
+        widgets = {
+            'first_name': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+            'last_name': forms.TextInput(
+                attrs={'class': 'form-control'}
+            ),
+            'email': forms.EmailInput(
+                attrs={'class': 'form-control'}
+            ),
+            'gender': forms.Select(
+                attrs={'class': 'form-control'}
+            ),
+            'profile_picture': forms.FileInput(
+                attrs={'class': 'form-control'}
+            )
+        }
+
+    def clean_job_title(self):
+        # User cannot modify his job title
+        return self.instance.job_title

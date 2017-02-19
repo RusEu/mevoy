@@ -16,58 +16,33 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form role="form">
+            <form role="form" enctype="multipart/form-data" method="POST" action="#">
+              {% csrf_token %}
               <div class="box-body">
                 <div class="form-group">
                   <label for="firstname">Firstname</label>
-                  <input id="firstname"
-                         type="text"
-                         class="form-control"
-                         value="{{ request.user.first_name }}"/>
+                  {{ form.first_name }}
                 </div>
                 <div class="form-group">
                   <label for="request_type">Lastname</label>
-                  <input id="last_name"
-                         type="text"
-                         class="form-control"
-                         value="{{ request.user.last_name }}"/>
+                  {{ form.last_name }}
                 </div>
                 <div class="form-group">
                   <label for="email">Email</label>
-                  <input id="email"
-                         type="text"
-                         class="form-control"
-                         value="{{ request.user.email }}"/>
+                  {{ form.email }}
                 </div>
                 <div class="form-group">
                   <label for="gender">Gender</label>
-                  <input id="gender"
-                         type="text"
-                         class="form-control"
-                         value="{{ request.user.gender }}"/>
+                  {{ form.gender }}
                 </div>
                 <div class="form-group">
                   <label for="profile_picture">Profile Picture</label>
-                  <input id="profile_picture"
-                         type="file"
-                         class="form-control"
-                         value="{{ request.user.profile_picture }}"/>
+                  {{ form.profile_picture }}
                 </div>
                 <div class="form-group">
                   <label for="job_title">Job Title</label>
-                  <input id="job_title"
-                         type="text"
-                         class="form-control"
-                         value="{{ request.user.job_title }}"/>
+                  {{ form.job_title }}
                 </div>
-                <div class="form-group">
-                  <label for="department">Department</label>
-                  <input id="department"
-                         type="text"
-                         class="form-control"
-                         value="{{ request.user.department }}"/>
-                </div>
-
               </div>
               <!-- /.box-body -->
 
