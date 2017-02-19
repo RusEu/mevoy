@@ -70,10 +70,10 @@
         <span>Calendar</span>
       </a>
       <ul class="treeview-menu">
-        {% for request_type in department_request_types %}
+        {% for department in request.user.manager_departments.all %}
         <li>
-          <a href="{% url 'calendar' request_type.id %}">
-            {{ request_type.name }}
+          <a href="{% url 'calendar' department.id %}">
+            {{ department.name }}
           </a>
         </li>
         {% endfor %}
@@ -100,14 +100,16 @@
         <span class="pull-right-container">
           <small class="label pull-right bg-red"
                  title="Declined">
-            {{ employee_declined_requests|length }}
+            {{ request.user.declined_requests|length }}
           </small>
           <small class="label pull-right bg-green"
                  title="Approved">
-            {{ employee_approved_requests|length }}
+            {{ request.user.approved_requests|length }}
           </small>
           <small class="label pull-right bg-yellow"
-                 title="Pending">{{ employee_pending_requests|length }}</small>
+                 title="Pending">
+            {{ request.user.pending_requests|length }}
+          </small>
         </span>
       </a>
       <ul class="treeview-menu">
@@ -119,7 +121,7 @@
         <li>
           <a href="{% url 'pending_requests' %}">
             <small class="label pull-right bg-yellow" title="Pending">
-              {{ employee_pending_requests|length }}
+              {{ request.user.pending_requests|length }}
             </small>
             Pending Requests
           </a>
@@ -127,7 +129,7 @@
         <li>
           <a href="{% url 'declined_requests' %}">
             <small class="label pull-right bg-red" title="Declined">
-              {{ employee_declined_requests|length }}
+              {{ request.user.declined_requests|length }}
             </small>
             Declined Requests
           </a>
@@ -135,28 +137,19 @@
         <li>
           <a href="{% url 'approved_requests' %}">
             <small class="label pull-right bg-green" title="Approved">
-              {{ employee_approved_requests|length }}
+              {{ request.user.approved_requests|length }}
             </small>
             Approved Requests
           </a>
         </li>
       </ul>
     </li>
-    <li class="treeview">
-      <a href="#">
-        <i class="fa fa-calendar"></i>
-        <span>Calendar</span>
+    <li>
+      <a href="{% url 'calendar' request.user.employee_department.id %}">
+        <i class="fa fa-calendar"></i> <span>Calendar</span>
       </a>
-      <ul class="treeview-menu">
-        {% for request_type in request.user.request_types %}
-        <li>
-          <a href="{% url 'calendar' request_type.id %}">
-            {{ request_type.name }}
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
-    </li>    <li>
+    </li>
+    <li>
       <a href="{% url 'notifications' %}">
         <i class="fa fa-bell"></i> <span>Notifications</span>
         <span class="pull-right-container">

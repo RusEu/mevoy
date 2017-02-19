@@ -95,7 +95,8 @@ class CalendarPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(CalendarPageView, self).get_context_data(**kwargs)
-        context["request_type"] = kwargs.get("request_type")
+        context["department"] = Department.objects.get(
+            id=kwargs.get("department"))
         return context
 
 
@@ -108,9 +109,7 @@ class CalendarApiView(View):
     def post(self, request):
         users = []
         events = []
-        department = Department.objects.get(
-            name=self.request.session['department'])
-        request_type = request.POST['request_type']
+        department = Department.objects.get(id=request.POST['department'])
 
         for index, user in enumerate(department.employees.all()):
             user_color = BACKGROUND_COLORS[index]
@@ -122,7 +121,7 @@ class CalendarApiView(View):
                 user=user,
                 status=Request.APPROVED,
                 department=department,
-                request_type=request_type
+                request_type=request.POST.get('request_type')
             )
             for user_request in user_requests:
                 events.append({

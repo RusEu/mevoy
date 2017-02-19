@@ -24,7 +24,11 @@
         <a href="{% url 'notifications' %}">
           <i class="fa fa-bell"></i>
           <span class="label label-warning">
-            {{ request.user.notification_set.all|length }}
+            {% if request.session.is_manager %}
+              {{ manager_notifications|length }}
+            {% else %}
+              {{ request.user.notification_set.all|length }}
+            {% endif %}
           </span>
         </a>
       </li>
@@ -52,11 +56,17 @@
           <p>{{ request.user.job_title.title }}</p>
           <p>
             <small>
-              {{ request.session.department }}
               {% if request.session.is_manager %}
-                Manager
+              Manager of
+              {% with departments=request.user.manager_departments%}
+                  {% if departments.count > 1 %}
+                     {{ departments.count }} departments
+                  {% else %}
+                      1 department
+                  {% endif %}
+              {% endwith %}
               {% else %}
-                Employee
+                {{ request.user.employee_department.name }} Employee
               {% endif %}
             </small>
           </p>

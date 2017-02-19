@@ -11,18 +11,52 @@
     <section class="content">
       <div class="row">
         <div class="col-md-3">
-          <div class="box box-solid">
-            <div class="box-header with-border">
-              <h4 class="box-title">Labels</h4>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-solid">
+                        <div class="box-header with-border">
+                            <h4 class="box-title">Request Type</h4>
+                        </div>
+                        <div class="box-body">
+                            <!-- the events -->
+                            {% if request.session.is_manager %}
+                            <select name="request_type" class="form-control">
+                                {% for request_type in request_types %}
+                                <option value="{{ request_type.pk }}">
+                                    {{ request_type.name}}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            {% else %}
+                            <select name="request_type" class="form-control">
+                                {% for request_type in request.user.request_types %}
+                                <option value="{{ request_type.pk }}">
+                                    {{ request_type.name}}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            {% endif %}
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /. box -->
+                </div>
             </div>
-            <div class="box-body">
-              <!-- the events -->
-              <div id="calendar-labels">
-              </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-solid">
+                        <div class="box-header with-border">
+                            <h4 class="box-title">Labels</h4>
+                        </div>
+                        <div class="box-body">
+                            <!-- the events -->
+                            <div id="calendar-labels">
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
             </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /. box -->
         </div>
         <!-- /.col -->
         <div class="col-md-9">
@@ -52,18 +86,18 @@
 <script src="{% static 'plugins/fullcalendar/fullcalendar.min.js' %}"></script>
 <!-- Page specific script -->
 <script>
- function addLabels(users){
+ function loadLabels(users){
+     $('#calendar-labels').empty();
      users.forEach(function(user) {
          var label = "<div class='external-event "+ user.color_class +"'>" + user.name + "</div>";
          $('#calendar-labels').append(label);
      })
  }
- $(function () {
+ $(function reloadCalendar() {
 
      /* initialize the calendar
         -----------------------------------------------------------------*/
-     var events = [];
-     var fullcalendar_config = {
+     $('#calendar').fullCalendar({
          header: {
              left: 'prev,next today',
              center: 'title',
@@ -76,25 +110,36 @@
              day: 'day'
          },
          //Random default events
-         events: events,
+         events: function(start, end, timezone, callback) {
+             console.log("working");
+             var data = {
+                 "department": {{ department.id }},
+                 "request_type": $("select[name='request_type']").val()
+             }
+             $.post("/calendar/api/", data)
+              .done(function(data) {
+                  loadLabels(data.users);
+                  var events = [];
+                  data.events.forEach(function(event){
+                      events.push({
+                          title: event.title,
+                          start: new Date(event.start),
+                          end: new Date(event.end),
+                          backgroundColor: event.backgroundColor,
+                          borderColor: event.backgroundColor
+                      })
+                  })
+                  callback(events)
+              });
+         },
          editable: false,
          droppable: false,
-     }
-     $.post("/calendar/api/", { "request_type": {{ request_type }} })
-      .done(function( data ) {
-          addLabels(data.users);
-          data.events.forEach(function(event){
-              events.push({
-                  title: event.title,
-                  start: new Date(event.start),
-                  end: new Date(event.end),
-                  backgroundColor: event.backgroundColor,
-                  borderColor: event.backgroundColor
-              })
-          })
-          $('#calendar').fullCalendar(fullcalendar_config);
-      });
+     });
  });
+
+ $("select[name='request_type']").change(function() {
+     $('#calendar').fullCalendar('refetchEvents');
+ })
 </script>
 
 {% endblock %}
