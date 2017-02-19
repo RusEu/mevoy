@@ -21,12 +21,12 @@ class RequestForm(forms.Form):
 
     def clean_start_date(self):
         start_date = datetime.datetime.strptime(
-            self.cleaned_data.get('start_date'), '%Y-%m-%dT%H:%M')
+            self.cleaned_data.get('start_date'), '%Y-%m-%d %H:%M')
         return start_date
 
     def clean_end_date(self):
         end_date = datetime.datetime.strptime(
-            self.cleaned_data.get('end_date'), '%Y-%m-%dT%H:%M')
+            self.cleaned_data.get('end_date'), '%Y-%m-%d %H:%M')
         return end_date
 
     def clean(self):

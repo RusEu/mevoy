@@ -60,6 +60,10 @@ class Request(models.Model):
                               choices=STATUS_TYPES,
                               default='pending')
     approvals = models.ManyToManyField('auth_account.User')
+    creation_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-creation_date']
 
     def __unicode__(self):
         return "{}, {}".format(self.user.email,

@@ -42,11 +42,11 @@
                 <div class="form-group">
                   <label for="start_date">Start Date</label>
                   <div class="input-group">
-                    <input type="datetime-local"
+                    <input type="text"
                            class="form-control"
                            name="start_date"
                            placeholder="Start Date">
-                    <span class="input-group-addon">
+                    <span class="input-group-addon" id="start_date">
                       <i class="fa fa-calendar"></i>
                     </span>
                   </div>
@@ -54,11 +54,11 @@
                 <div class="form-group">
                   <label for="end_date">End Date</label>
                   <div class="input-group">
-                    <input type="datetime-local"
+                    <input type="text"
                            class="form-control"
                            name="end_date"
                            placeholder="End Date">
-                    <span class="input-group-addon">
+                    <span class="input-group-addon" id="#end_date">
                       <i class="fa fa-calendar"></i>
                     </span>
                   </div>
@@ -79,4 +79,18 @@
       </div>
     </section>
   </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script type="text/javascript">
+   $(function(){
+       $('input[name="start_date"]').appendDtpicker({
+           "minuteInterval": 30
+       });
+       $('input[name="end_date"]').appendDtpicker({
+           "minuteInterval": 30
+       });
+   });
+  </script>
 {% endblock %}
