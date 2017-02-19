@@ -20,7 +20,7 @@ class NotificationsPageView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         notifications_id = request.POST.getlist('notifications[]')
-        notifications = Notification.objects.filter(user=request.user,
-                                                    id__in=notifications_id)
+        # Not sure if we should let the managers delete notifications :/
+        notifications = Notification.objects.filter(id__in=notifications_id)
         notifications.delete()
         return HttpResponse(status=200)
