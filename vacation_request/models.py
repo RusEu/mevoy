@@ -38,7 +38,7 @@ class Request(models.Model):
     :param department: The department that will receive the request and will
                        approve/decline it.
     :param status: The status that a request can have(pending/approved/declined)
-    :param approvals: How many managers have approved the request
+    :param approvals: Managers that approved the request
     """
     APPROVED = "approved"
     DECLINED = "declined"
@@ -59,7 +59,7 @@ class Request(models.Model):
     status = models.CharField(max_length=100,
                               choices=STATUS_TYPES,
                               default='pending')
-    approvals = models.IntegerField(default=0)
+    approvals = models.ManyToManyField('auth_account.User')
 
     def __unicode__(self):
         return "{}, {}".format(self.user.email,
