@@ -45,18 +45,11 @@ class LoginUserPageView(FormView):
     template_name = "auth_account/login.html"
     form_class = LoginForm
 
-    def get_context_data(self, **kwargs):
-        context = super(LoginUserPageView, self).get_context_data(**kwargs)
-        context["departments"] = Department.objects.all()
-        return context
-
     def form_valid(self, form):
         login(self.request, form.get_user())
-        department = form.cleaned_data["department"]
-        self.request.session["department"] = department.name
         if form.cleaned_data.get('login_as_manager'):
             self.request.session["is_manager"] = True
-            success_url = reverse("pending_requests")
+            success_url = reverse_lazy("pending_requests")
         else:
-            success_url = reverse("new_request")
+            success_url = reverse_lazy("new_request")
         return HttpResponseRedirect(success_url)
