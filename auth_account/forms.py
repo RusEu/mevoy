@@ -8,29 +8,15 @@ from auth_account.models import User
 
 
 class LoginForm(AuthenticationForm):
-    department = forms.CharField(max_length=100)
     login_as_manager = forms.BooleanField(required=False)
 
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.error_messages.update({
-            'department_incorrect': _(
-                'The provided department does not exist'),
-            'department_user_not_allowed': _(
-                'You are not allowed to join this department'),
-            'department_user_not_manager': _(
-                'You are not allowed to join the department as a manager')
+            'user_not_manager': _('You are not a manager '),
+            'user_not_employee': _('You are not an employee'),
+            'user_many_departments': _('You are an employee of more then one departments')
         })
-
-    def clean_department(self):
-        department = Department.objects.filter(
-            id=self.cleaned_data.get('department')).first()
-        if not department:
-            raise forms.ValidationError(
-                self.error_messages['department_incorrect'],
-                code='department_incorrect'
-            )
-        return department
 
     def confirm_login_allowed(self, user):
         """
@@ -48,30 +34,31 @@ class LoginForm(AuthenticationForm):
                 self.error_messages['inactive'],
                 code='inactive',
             )
-        department = self.cleaned_data.get('department')
 
         if self.cleaned_data.get('login_as_manager', False):
             # Check if the current user is a manager of the department
-            if user not in department.managers.all():
+            if not user.manager_departments.all():
                 raise forms.ValidationError(
-                    self.error_messages['department_user_not_manager'],
-                    code='department_user_not_manager'
+                    self.error_messages['user_not_manager'],
+                    code='user_not_manager'
                 )
         else:
-            if user not in department.employees.all():
+            employee_departments = user.employee_departments.all()
+            if not employee_departments:
                 # Check if the user is an employee of the department
                 raise forms.ValidationError(
-                    self.error_messages["department_user_not_allowed"],
-                    code="department_user_not_allowed"
+                    self.error_messages["user_not_employee"],
+                    code="user_not_employee"
+                )
+            if employee_departments.count() > 1:
+                raise forms.ValidationError(
+                    self.error_messages["user_many_departments"],
+                    code="user_many_departments"
                 )
 
 
 class ProfileForm(forms.ModelForm):
     """Form to modify the user's profile"""
-    error_messages = {
-        "email_not_unique": _("An account with the provided email already exists")
-    }
-
     job_title = forms.CharField(
         required=False,
         widget=forms.TextInput(
